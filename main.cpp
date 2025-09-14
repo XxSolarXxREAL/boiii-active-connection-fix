@@ -174,7 +174,7 @@ void mainMenu() {
 
                 setColor(14);
                 std::cout << "Downloading data...\n";
-                if (!downloadFile("https://github.com/XxSolarXxREAL/boiii-active-connection-fix/raw/refs/heads/main/data.rar", zipPath)) {
+                if (!downloadFile("https://github.com/XxSolarXxREAL/boiii-active-connection-fix/raw/refs/heads/main/data.zip", zipPath)) {
                     setColor(12);
                     std::cout << "Download failed.\n";
                     pauseAndReturn();
