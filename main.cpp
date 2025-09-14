@@ -33,7 +33,6 @@ void drawHeader() {
                                                   |_|   |_/_/\_\                                      
                                                                                                       
                                                                                                     
-                                                                                   
 )" << "\n\n";
     setColor(15);
 }
@@ -48,7 +47,6 @@ void clearScreen() {
     system("cls");
 }
 
-// Guide info
 void showGuide() {
     clearScreen();
     setColor(14);
@@ -98,6 +96,30 @@ bool extractZip(const std::string& zipPath, const std::string& extractTo) {
     return result == 0;
 }
 
+void showSourceCode() {
+    clearScreen();
+    setColor(14);
+    std::cout << "Opening source code repository in 3 seconds...\n";
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    ShellExecuteA(NULL, "open", "https://github.com/XxSolarXxREAL/boiii-active-connection-fix/tree/main", NULL, NULL, SW_SHOWNORMAL);
+
+    std::cout << "\nYou can explore the source code at the provided link.\n";
+    std::cout << "Feel free to review or contribute!\n\n";
+    pauseAndReturn();
+}
+
+void showCredits() {
+    clearScreen();
+    setColor(14);
+    std::cout << "Credits:\n\n";
+    std::cout << "This was made by xxsolarxx09 on Discord.\n\n";
+    std::cout << "He is actively developing and updating the EZZ client,\n";
+    std::cout << "and making fixes for a few known issues.\n\n";
+    std::cout << "Right now, the error \"You must have an active internet connection\" is the only thing he has fixed so far.\n";
+    std::cout << "But he plans to make more fixes!\n\n";
+    pauseAndReturn();
+}
+
 void mainMenu() {
     while (true) {
         clearScreen();
@@ -107,68 +129,73 @@ void mainMenu() {
         std::cout << "1) View Guide & Instructions\n";
         std::cout << "2) Automatic Fix\n";
         std::cout << "3) Help & Join Discord\n";
-        std::cout << "4) Exit\n\n";
-        std::cout << "Select an option (1-4): ";
+        std::cout << "4) Source Code\n";
+        std::cout << "5) Credits\n";
+        std::cout << "6) Exit\n\n";
+        std::cout << "Select an option (1-6): ";
 
         int choice;
         std::cin >> choice;
         std::cin.ignore();
 
-        if (choice == 1) {
+        switch (choice) {
+        case 1:
             std::thread(openGuideURL).detach();
             setColor(14);
             std::cout << "\nIn the folder \"boiii\", look for \"Boiii-Remake\" or this path:\n";
             std::cout << "%localappdata%\\Boiii-Remake\\\n";
             pauseAndReturn();
-        }
-        else if (choice == 2) {
+            break;
+        case 2:
             clearScreen();
             setColor(14);
             std::cout << "Starting automatic fix...\n";
 
-            std::string localAppData = getLocalAppDataPath();
-            if (localAppData.empty()) {
-                setColor(12);
-                std::cout << "Failed to get local app data path.\n";
-                pauseAndReturn();
-                continue;
-            }
-            std::string targetFolder = localAppData + "\\Boiii-Remake";
-            std::string zipPath = targetFolder + "\\data.zip";
+            {
+                std::string localAppData = getLocalAppDataPath();
+                if (localAppData.empty()) {
+                    setColor(12);
+                    std::cout << "Failed to get local app data path.\n";
+                    pauseAndReturn();
+                    break;
+                }
+                std::string targetFolder = localAppData + "\\Boiii-Remake";
+                std::string zipPath = targetFolder + "\\data.zip";
 
-            try {
-                fs::create_directories(targetFolder);
-            }
-            catch (...) {
-                setColor(12);
-                std::cout << "Failed to create directory.\n";
-                pauseAndReturn();
-                continue;
-            }
+                try {
+                    fs::create_directories(targetFolder);
+                }
+                catch (...) {
+                    setColor(12);
+                    std::cout << "Failed to create directory.\n";
+                    pauseAndReturn();
+                    break;
+                }
 
-            setColor(14);
-            std::cout << "Downloading data...\n";
-            if (!downloadFile("https://github.com/XxSolarXxREAL/boiii-active-connection-fix/raw/refs/heads/main/data.rar", zipPath)) {
-                setColor(12);
-                std::cout << "Download failed.\n";
-                pauseAndReturn();
-                continue;
-            }
+                setColor(14);
+                std::cout << "Downloading data...\n";
+                if (!downloadFile("https://github.com/XxSolarXxREAL/boiii-active-connection-fix/raw/refs/heads/main/data.rar", zipPath)) {
+                    setColor(12);
+                    std::cout << "Download failed.\n";
+                    pauseAndReturn();
+                    break;
+                }
 
-            setColor(14);
-            std::cout << "Extracting...\n";
-            if (!extractZip(zipPath, targetFolder)) {
-                setColor(12);
-                std::cout << "Extraction failed.\n";
-                pauseAndReturn();
-                continue;
-            }
+                setColor(14);
+                std::cout << "Extracting...\n";
+                if (!extractZip(zipPath, targetFolder)) {
+                    setColor(12);
+                    std::cout << "Extraction failed.\n";
+                    pauseAndReturn();
+                    break;
+                }
 
-            setColor(10);
-            std::cout << "Fix completed! You can now run boiii-remake.exe.\n";
-            pauseAndReturn();
-        }
-        else if (choice == 3) {
+                setColor(10);
+                std::cout << "Fix completed! You can now run boiii-remake.exe.\n";
+                pauseAndReturn();
+            }
+            break;
+        case 3:
             clearScreen();
             showGuide();
             setColor(14);
@@ -180,16 +207,22 @@ void mainMenu() {
                 openDiscord();
             }
             pauseAndReturn();
-        }
-        else if (choice == 4) {
+            break;
+        case 4:
+            showSourceCode();
+            break;
+        case 5:
+            showCredits();
+            break;
+        case 6:
             setColor(15);
             std::cout << "Exiting...\n";
-            break;
-        }
-        else {
+            return;
+        default:
             setColor(12);
             std::cout << "Invalid choice. Try again.\n";
             pauseAndReturn();
+            break;
         }
     }
 }
