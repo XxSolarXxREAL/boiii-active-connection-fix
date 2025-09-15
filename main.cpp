@@ -165,23 +165,7 @@ const std::string REMAKE_FOLDER_NAME = "\\Boiii-Remake";
 
 void updateBoiiiExe() {
     clearScreen();
-    std::cout << "\033[93mDownloading latest boiii-remake.exe...\033[0m\n";
-    std::string localAppData = getLocalAppDataPath();
-    if (localAppData.empty()) {
-        std::cout << "\033[91mFailed to get local app data path.\033[0m\n";
-        pauseAndReturn();
-        return;
-    }
-    std::string targetFolder = localAppData + REMAKE_FOLDER_NAME;
-    std::string exePath = targetFolder + "\\boiii-remake.exe";
-    if (!downloadFile("https://github.com/XxSolarXxREAL/boiii-active-connection-fix/raw/refs/heads/main/boiii-remake.exe", exePath)) {
-        std::cout << "\033[91mDownload failed for boiii-remake.exe.\033[0m\n";
-    }
-    else {
-        std::cout << "\033[92mboiii-remake.exe updated successfully.\033[0m\n\n";
-        std::cout << "BE SURE TO PLACE THIS IN YOUR Black Ops 3 folder where BlackOps3.exe is!\n\n";
-        std::cout << "EXAMPLE: C:\\SteamLibrary\\steamapps\\common\\Call of Duty Black Ops III\n\n";
-    }
+    std::cout << "\033[91mWork in progress\033[0m\n";
     pauseAndReturn();
 }
 
