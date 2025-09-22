@@ -134,12 +134,6 @@ void openGuideURL() {
     }
 }
 
-void openDiscord() {
-    std::cout << "\033[93mRedirecting to Discord in 5 seconds...\033[0m\n";
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    ShellExecuteA(NULL, "open", "https://discord.gg/ezz", NULL, NULL, SW_SHOWNORMAL);
-}
-
 void showSourceCode() {
     clearScreen();
     std::cout << "\033[93mOpening source code repository in 3 seconds...\033[0m\n";
@@ -161,7 +155,7 @@ void showCredits() {
     pauseAndReturn();
 }
 
-const std::string REMAKE_FOLDER_NAME = "\\Boiii-Remake";
+const std::string BOIII_FOLDER_NAME = "\\boiii";
 
 void updateBoiiiExe() {
     clearScreen();
@@ -178,15 +172,17 @@ void updateFixExe() {
         pauseAndReturn();
         return;
     }
-    std::string targetFolder = localAppData + REMAKE_FOLDER_NAME;
+    std::string targetFolder = localAppData + BOIII_FOLDER_NAME;
+    if (!fs::exists(targetFolder)) fs::create_directories(targetFolder);
     std::string fixExePath = targetFolder + "\\Boiii active connection fix.exe";
     std::string url = "https://github.com/XxSolarXxREAL/boiii-active-connection-fix/raw/refs/heads/main/Boiii%20active%20connection%20fix.exe";
+
     if (!downloadFile(url, fixExePath)) {
         std::cout << "\033[91mDownload failed for \"Boiii active connection fix.exe\".\033[0m\n";
     }
     else {
         std::cout << "\033[92m\"Boiii active connection fix.exe\" updated successfully.\033[0m\n";
-        std::cout << "Found in %localappdata%\\Boiii-Remake\\ \n";
+        std::cout << "Found in %localappdata%\\boiii\\ \n";
     }
     pauseAndReturn();
 }
@@ -200,9 +196,11 @@ void updateDataZip() {
         pauseAndReturn();
         return;
     }
-    std::string targetFolder = localAppData + REMAKE_FOLDER_NAME;
+    std::string targetFolder = localAppData + BOIII_FOLDER_NAME;
+    if (!fs::exists(targetFolder)) fs::create_directories(targetFolder);
     std::string zipPath = targetFolder + "\\data.zip";
     std::string url = "https://github.com/XxSolarXxREAL/boiii-active-connection-fix/raw/refs/heads/main/data.zip";
+
     if (!downloadFile(url, zipPath)) {
         std::cout << "\033[91mDownload failed for data.zip.\033[0m\n";
         pauseAndReturn();
@@ -229,7 +227,7 @@ void removeDataFolder() {
         pauseAndReturn();
         return;
     }
-    std::string dataFolderPath = localAppData + REMAKE_FOLDER_NAME + "\\data";
+    std::string dataFolderPath = localAppData + BOIII_FOLDER_NAME + "\\data";
     try {
         if (fs::exists(dataFolderPath)) {
             fs::remove_all(dataFolderPath);
@@ -251,6 +249,47 @@ void updateAll() {
     updateDataZip();
 }
 
+void supportDiscord() {
+    clearScreen();
+    std::cout << "\033[93mGo to our EZZ support channels:\n";
+    std::cout << "Channel: #bo3-support\n";
+    std::cout << "Link: https://discord.com/channels/968255249506791524/968256194508652564\n\n";
+    std::cout << "Then type \xA3replace-bo3 and follow the guide.\n\n";
+    pauseAndReturn();
+}
+
+void updateBlackOps3Exe() {
+    clearScreen();
+    std::string folderPath;
+    std::cout << "\033[93mPlease enter your BlackOps3 game folder path: \033[0m";
+    std::getline(std::cin, folderPath);
+
+    if (folderPath.empty()) {
+        std::cout << "\033[91mInvalid path.\033[0m\n";
+        pauseAndReturn();
+        return;
+    }
+
+    if (!fs::exists(folderPath)) {
+        std::cout << "\033[91mThe specified folder does not exist.\033[0m\n";
+        pauseAndReturn();
+        return;
+    }
+
+    std::string url = "https://cdn.discordapp.com/attachments/968256194508652564/1294401998078218251/BlackOps3.exe?ex=68cfbc8d&is=68ce6b0d&hm=ae77c8600c0507109c8395d8b6502368433e0a22ff1a90dab106ec403c915109&";
+    std::string exePath = folderPath + "\\BlackOps3.exe";
+
+    std::cout << "\n\033[93mDownloading the latest BlackOps3.exe...\033[0m\n";
+
+    if (downloadFile(url, exePath)) {
+        std::cout << "\033[92mBlackOps3.exe has been updated successfully!\n";
+    }
+    else {
+        std::cout << "\033[91mFailed to download or place the file.\n";
+    }
+    pauseAndReturn();
+}
+
 void mainMenu() {
     while (true) {
         clearScreen();
@@ -261,13 +300,16 @@ void mainMenu() {
         std::cout << "\033[93m3)\033[0m  Help & Join Discord\n";
         std::cout << "\033[93m4)\033[0m  Source Code\n";
         std::cout << "\033[93m5)\033[0m  Credits\n";
-        std::cout << "\033[93m6)\033[0m  Update boiii-remake.exe\n";
+        std::cout << "\033[93m6)\033[0m  Update boiii-Exe\n";
         std::cout << "\033[93m7)\033[0m  Update \"Boiii active connection fix.exe\"\n";
         std::cout << "\033[93m8)\033[0m  Update data.zip\n";
         std::cout << "\033[93m9)\033[0m  Remove data folder\n";
-        std::cout << "\033[93m10)\033[0m Update All\n";
-        std::cout << "\033[93m11)\033[0m Exit\n\n";
-        std::cout << "\033[96mSelect an option (1-11): \033[0m";
+        std::cout << "\033[93m10)\033[0m  Update All\n";
+        std::cout << "\033[93m11)\033[0m  Support - Bad binary loaded into memory\n";
+        std::cout << "\033[93m12)\033[0m  Update BlackOps3.exe (Outdated error fix)\n";
+        std::cout << "\033[93m13)\033[0m  Exit\n\n";
+        std::cout << "\033[96mSelect an option (1-13): \033[0m";
+
         int choice;
         if (!(std::cin >> choice)) {
             std::cin.clear();
@@ -283,8 +325,8 @@ void mainMenu() {
         case 1: {
             clearScreen();
             std::thread(openGuideURL).detach();
-            std::cout << "\n\n\033[92mIn the folder \"boiii\", look for \"Boiii-Remake\" or this path:\033[0m\n";
-            std::cout << "%localappdata%\\Boiii-Remake\\\n\n";
+            std::cout << "\n\n\033[92mIn the folder \"boiii\", look for \"Boiii\" or this path:\033[0m\n";
+            std::cout << "%localappdata%\\boiii\\\n\n";
             pauseAndReturn();
         } break;
         case 2: {
@@ -295,10 +337,9 @@ void mainMenu() {
                 std::cout << "\033[91mFailed to get local app data.\033[0m\n";
                 pauseAndReturn(); break;
             }
-            std::string targetFolder = localAppData + REMAKE_FOLDER_NAME;
+            std::string targetFolder = localAppData + BOIII_FOLDER_NAME;
+            if (!fs::exists(targetFolder)) fs::create_directories(targetFolder);
             std::string zipPath = targetFolder + "\\data.zip";
-            try { fs::create_directories(targetFolder); }
-            catch (...) { std::cout << "\033[91mFailed to create directory.\033[0m\n"; pauseAndReturn(); break; }
             std::cout << "\033[93mDownloading data...\033[0m\n\n";
             if (!downloadFile("https://github.com/XxSolarXxREAL/boiii-active-connection-fix/raw/refs/heads/main/data.zip", zipPath)) {
                 std::cout << "\033[91mDownload failed.\033[0m\n";
@@ -309,7 +350,7 @@ void mainMenu() {
                 std::cout << "\033[91mExtraction failed.\033[0m\n";
                 pauseAndReturn(); break;
             }
-            std::cout << "\033[92mFix completed! You can now run boiii-remake.exe.\033[0m\n\n";
+            std::cout << "\033[92mFix completed! You can now run boiii.exe.\033[0m\n\n";
             pauseAndReturn();
         } break;
         case 3: {
@@ -328,7 +369,9 @@ void mainMenu() {
         case 8: updateDataZip(); break;
         case 9: removeDataFolder(); break;
         case 10: updateAll(); break;
-        case 11:
+        case 11: supportDiscord(); break;
+        case 12: updateBlackOps3Exe(); break;
+        case 13:
             std::cout << "\033[97mExiting...\033[0m\n";
             return;
         default:
