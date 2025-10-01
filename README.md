@@ -1,4 +1,5 @@
 # BO3 Active Connection Fixer
+By xxsolarxx09 [Discord user](https://discord.com/users/86461208774154652) (USERNAME = xxsolarxx09 USER ID = 864612087741546527)
 
 # DEV INFO
 - I am currently working on a remake of this as its slightly buggy
