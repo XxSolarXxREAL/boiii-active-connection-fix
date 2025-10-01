@@ -1,5 +1,11 @@
 # BO3 Active Connection Fixer
 
+# DEV INFO
+- I am currently working on a remake of this as its slightly buggy
+- will support both console version AND GUI version
+- Fixing all bugs regarding missing dlls and etc
+- More info later
+
 A Windows-based utility designed to help fix the "Active Connection" error in Black Ops 3 (BOIII). This tool offers automatic fixes, updates, and helpful guides to ensure your game runs smoothly.
 
 ---------------------------------------------------------------------------------------------------------------
